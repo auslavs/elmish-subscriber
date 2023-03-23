@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>test_elmish</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Library.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fable.React" Version="9.3.0" />
+    <PackageReference Include="Fable.React.UseElmish" Version="1.0.0-beta-001" />
+    <PackageReference Include="Feliz" Version="2.6.0" />
+  </ItemGroup>
+
+</Project>
