@@ -1,8 +1,10 @@
 ﻿module test_elmish
 
 open Elmish
-open Fable.React
+open Feliz
+open Feliz.UseElmish
 open System
+open Fable.Core.JS
 
 type Model = {
     Count : int
@@ -23,17 +25,14 @@ let update msg (model:Model) =
         printfn "refreshing log history"
         { model with Count = model.Count + 1}, Cmd.none
 
-open Feliz
-open Fable.Core.JS
-
 let subscribeToTimer dispatch =
     let subscriptionId =
         setInterval
             (fun _ ->
-                printfn "sending refresh"
+                printfn "Subscriber: sending refresh"
                 dispatch Refresh)
             5000
-    { new IDisposable with member _.Dispose() = clearTimeout(subscriptionId) }
+    { new IDisposable with member _.Dispose() = clearTimeout subscriptionId }
 
 let makeProgram() =
     Program.mkProgram init update (fun _ _ -> ())
@@ -51,16 +50,13 @@ let LogHistory
     let model, dispatch =
         React.useElmish (makeProgram, props.initialValue, [||])
 
-    // let model, dispatch =
-    //     React.useElmish (init props.initialValue, update, [||])
+    Html.div [
+        prop.children [
+            Html.button [
+                prop.onClick (fun _ -> dispatch Refresh)
+                prop.text "Refresh"
+            ]
 
-    // React.useEffect((fun () -> subscribeToTimer dispatch), [| box dispatch |])
-
-    div [] [
-        Html.button [
-            prop.onClick (fun _ -> dispatch Refresh)
-            prop.text "Refresh"
+            Html.text (string model.Count)
         ]
-
-        str (string model.Count)
     ]
